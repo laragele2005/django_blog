@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <!-- Load Dashboard left sidebar -->
+    {% include 'dashboard/sidebar.html' %}
+    <span>Logged in as {{ user }}</span>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col">
+          <div class="card border-default mb-3">
+            <div class="card-header text-center text-uppercase font-weight-bold">All Categories</div>
+            <div class="card-body text-dark">
+              <h5 class="card-title text-center">{{ category_count }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-default mb-3">
+            <div class="card-header text-center text-uppercase font-weight-bold">All Posts</div>
+            <div class="card-body text-dark">
+              <h5 class="card-title text-center">{{ posts_count }}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard right sidebar -->
+  </div>
+{% endblock %}
