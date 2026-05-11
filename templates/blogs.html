@@ -6,31 +6,65 @@
     <div class="row">
         
         <div class="col-lg-8">
-        <article class="blog-post">
-            <header class="mb-4">
-                <h1>{{ single_blog.title }}</h1>
-                <div class="d-flex flex-column"> 
-                <small class="mb-2 fst-italic text-muted">{{ single_blog.created_at|date:"M d, Y" }} | {{ single_blog.author }}</small>
-                <a href="#" style="width: fit-content;" class="badge bg-warning text-decoration-none text-light">{{single_blog.category}}</a>
+            <article class="blog-post">
+                <header class="mb-4">
+                    <h1>{{ single_blog.title }}</h1>
+                    <div class="d-flex flex-column"> 
+                    <small class="mb-2 fst-italic text-muted">{{ single_blog.created_at|date:"M d, Y" }} | {{ single_blog.author }}</small>
+                    <a href="#" style="width: fit-content;" class="badge bg-warning text-decoration-none text-light">{{single_blog.category}}</a>
+                    </div>
+                </header>
+
+            <img src="{{ single_blog.featured_image.url }}" alt="{{ single_blog.title }}" class="img-fluid my-4">
+            <section class="mb-5">
+                <p class="mt-2">{{ single_blog.blog_body}}</p>
+            
+
+                <h4>Comments ({{comment_count}})</h4>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <p class="card-text mb-0">{{comment}}</p>
+                                <span>
+                                    <small>By {{comment.user}}</small>
+                                    <small>| {{comment.created_at |date:"M d, Y"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% else %}
+                    <h5>No comments here</h5>
+                {% endif %}
+                <br>
+                <h3 class="mt-2">Write a comment</h3>
+                <div class="form-group">
+                    {% if user.is_authenticated %}
+                    <form action="" method="POST">
+                        {% csrf_token %} 
+                        <div class="form-group">
+                            <textarea name="comment" class="form-control" placeholder="Write your comment"></textarea>
+                            <input type="submit" value="Submit" class="btn btn-primary mt-2">
+                        </div>
+                    </form>
+                    {% else %}
+                    <p>Please <span><a href="{% url 'login' %}">loging</a></span> to write a comment</p>
+                    {% endif %}
                 </div>
-            </header>
-
-        <img src="{{ single_blog.featured_image.url }}" alt="{{ single_blog.title }}" class="img-fluid my-4">
-        <section class="mb-5">
-            <p class="mt-2">{{ single_blog.blog_body}}</p>
-        </section>
-        
+            </section>
+            </article>
         </div>
-        </article>
+        
 
 
 
         
-            <div class="card mb-4 p-3">
+            <div class="card m-2 p-3 h-25 ">
                 <h4 class="font-italic">Categories</h4>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col">
                             <ul class="list-unstyled">
                                 {% for category in categories %}
                                 <li><a href="{% url 'posts_by_category' category.id %}">{{ category }}</a></li>
@@ -40,15 +74,15 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-4 p-3">
+            <div class="card m-2 p-3 h-25">
                 {% if social_links %}
                 <h4 class="font-italic">Follow us</h4>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col">
                             <ul class="list-unstyled">
                                     {% for link in social_links %}
-                                        <li><a href={{link.link}} target="_blank">{{link.plataform}}</a></li>
+                                        <li><a href="{{link.link}}" target="_blank"> {{ link.plataform }} </a></li>
                                     {% endfor %}   
                             </ul>
                         </div>
